@@ -10,67 +10,99 @@ st.set_page_config(
 )
 
 # --------------------------------------------------
-# TOP RIGHT THEME DROPDOWN
+# THEME SELECTOR (TOP RIGHT)
 # --------------------------------------------------
-col1, col2, col3 = st.columns([6, 1.5, 1])
-with col3:
-    theme = st.selectbox("", ["Light Mode", "Dark Mode"])
+_, _, theme_col = st.columns([6, 1.5, 1.5])
+with theme_col:
+    theme = st.selectbox("Theme", ["Dark", "Light"], label_visibility="collapsed")
 
 # --------------------------------------------------
-# THEME STYLES
+# THEME VARIABLES
 # --------------------------------------------------
-if theme == "Dark Mode":
-    bg_color = "#0E1117"
-    card_color = "#161B22"
-    text_color = "#FAFAFA"
-    accent = "#4FD1C5"
+if theme == "Dark":
+    BG = "#0E1117"
+    CARD = "#161B22"
+    TEXT = "#E6EDF3"
+    MUTED = "#9BA3AF"
+    ACCENT = "#4FD1C5"
 else:
-    bg_color = "#F7FAFC"
-    card_color = "#FFFFFF"
-    text_color = "#1A202C"
-    accent = "#2B6CB0"
+    BG = "#F4F6F8"
+    CARD = "#FAFAFA"
+    TEXT = "#1A202C"
+    MUTED = "#4A5568"
+    ACCENT = "#2563EB"
 
+# --------------------------------------------------
+# GLOBAL STYLES
+# --------------------------------------------------
 st.markdown(
     f"""
     <style>
-    body {{
-        background-color: {bg_color};
-        color: {text_color};
+    html, body, [data-testid="stApp"] {{
+        background-color: {BG};
+        color: {TEXT};
     }}
+
+    .container {{
+        max-width: 1100px;
+        margin: auto;
+    }}
+
     .card {{
-        background-color: {card_color};
-        padding: 20px;
-        border-radius: 14px;
-        box-shadow: 0px 8px 20px rgba(0,0,0,0.05);
-        margin-bottom: 20px;
+        background-color: {CARD};
+        padding: 24px;
+        border-radius: 16px;
+        margin-bottom: 24px;
+        border: 1px solid rgba(0,0,0,0.05);
     }}
+
     .skill {{
-        display: inline-block;
-        background-color: {accent};
+        background-color: {ACCENT};
         color: white;
-        padding: 6px 14px;
-        border-radius: 20px;
-        margin: 6px 6px 0 0;
+        padding: 8px 16px;
+        border-radius: 999px;
         font-size: 14px;
+        display: inline-block;
+        margin: 6px;
     }}
-    .metric {{
-        font-size: 26px;
-        font-weight: bold;
-        color: {accent};
+
+    .muted {{
+        color: {MUTED};
     }}
     </style>
+
+    <script>
+    function animateValue(id, start, end, duration) {{
+        const obj = document.getElementById(id);
+        let startTimestamp = null;
+        const step = (timestamp) => {{
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            obj.innerHTML = Math.floor(progress * (end - start) + start);
+            if (progress < 1) {{
+                window.requestAnimationFrame(step);
+            }}
+        }};
+        window.requestAnimationFrame(step);
+    }}
+    </script>
     """,
     unsafe_allow_html=True
 )
+
+# --------------------------------------------------
+# CONTENT WRAPPER
+# --------------------------------------------------
+st.markdown("<div class='container'>", unsafe_allow_html=True)
 
 # --------------------------------------------------
 # HEADER
 # --------------------------------------------------
 st.markdown(
     f"""
-    <h1 style="margin-bottom:5px;">Kanishk Dawar</h1>
-    <h4 style="color:{accent}; margin-top:0;">
-    Brand & Content Strategist | Performance Marketing | Consumer Insights
+    <h1>Kanishk Dawar</h1>
+    <h4 class="muted">
+    Brand & Content Strategist · Performance Marketing · Consumer Insights
     </h4>
     """,
     unsafe_allow_html=True
@@ -79,17 +111,16 @@ st.markdown(
 # --------------------------------------------------
 # CTA BUTTONS
 # --------------------------------------------------
-cta1, cta2, cta3 = st.columns([2, 2, 4])
+cta1, cta2 = st.columns([2, 6])
 
 with cta1:
-    resume_path = Path("Kanishk_Dawar_Resume.pdf")
-    if resume_path.exists():
-        with open(resume_path, "rb") as file:
+    resume = Path("Kanishk_Dawar_Resume.pdf")
+    if resume.exists():
+        with open(resume, "rb") as f:
             st.download_button(
                 "📄 Download Resume",
-                file,
-                file_name="Kanishk_Dawar_Resume.pdf",
-                mime="application/pdf"
+                f,
+                file_name="Kanishk_Dawar_Resume.pdf"
             )
 
 with cta2:
@@ -97,11 +128,11 @@ with cta2:
         """
         <a href="https://www.linkedin.com" target="_blank">
         <button style="
-            background-color:#0A66C2;
+            background:#0A66C2;
             color:white;
-            padding:10px 16px;
+            padding:10px 18px;
             border:none;
-            border-radius:8px;
+            border-radius:10px;
             cursor:pointer;">
             🔗 Connect on LinkedIn
         </button>
@@ -111,16 +142,15 @@ with cta2:
     )
 
 # --------------------------------------------------
-# ABOUT ME
+# ABOUT
 # --------------------------------------------------
 st.markdown("## About Me")
 st.markdown(
     """
     <div class="card">
-    Brand & Content Strategist with **2.5+ years of experience** building cultural narratives,
-    driving engagement, and executing **data-driven marketing campaigns** across
-    **education and hospitality sectors**. Strong focus on performance optimization,
-    creative effectiveness, and brand positioning.
+    Brand & Content Strategist with <b>2.5+ years of experience</b> driving cultural narratives,
+    engagement, and <b>data-driven marketing campaigns</b> across education and hospitality.
+    Strong focus on performance optimization and creative effectiveness.
     </div>
     """,
     unsafe_allow_html=True
@@ -133,11 +163,48 @@ st.markdown("## Why Hire Me")
 st.markdown(
     """
     <div class="card">
-    ✔ I combine **creative strategy + performance marketing** <br><br>
-    ✔ I’ve delivered **measurable growth** (ROI, engagement, awareness) <br><br>
-    ✔ I understand **brand storytelling backed by data** <br><br>
-    ✔ I’ve worked across **premium education & hospitality brands**
+    ✔ Creative strategy + performance marketing<br><br>
+    ✔ Proven measurable impact (ROI, awareness, engagement)<br><br>
+    ✔ Brand storytelling backed by data<br><br>
+    ✔ Experience with premium education & hospitality brands
     </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# --------------------------------------------------
+# ANIMATED COUNTERS
+# --------------------------------------------------
+st.markdown("## Impact at a Glance")
+st.markdown(
+    f"""
+    <div class="card">
+        <div style="display:flex; justify-content:space-between; text-align:center;">
+            <div style="flex:1;">
+                <h2 id="exp" style="color:{ACCENT};">0</h2>
+                <p class="muted">Years Experience</p>
+            </div>
+            <div style="flex:1;">
+                <h2 id="awareness" style="color:{ACCENT};">0</h2>
+                <p class="muted">% Brand Awareness Growth</p>
+            </div>
+            <div style="flex:1;">
+                <h2 id="engagement" style="color:{ACCENT};">0</h2>
+                <p class="muted">% Engagement Growth</p>
+            </div>
+            <div style="flex:1;">
+                <h2 id="roi" style="color:{ACCENT};">0</h2>
+                <p class="muted">% ROI Improvement</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        animateValue("exp", 0, 3, 1200);
+        animateValue("awareness", 0, 25, 1500);
+        animateValue("engagement", 0, 30, 1500);
+        animateValue("roi", 0, 20, 1500);
+    </script>
     """,
     unsafe_allow_html=True
 )
@@ -146,6 +213,7 @@ st.markdown(
 # SKILLS
 # --------------------------------------------------
 st.markdown("## Core Skills")
+st.markdown("<div class='card'>", unsafe_allow_html=True)
 
 skills = [
     "Brand Strategy", "Brand Positioning", "Content Strategy",
@@ -154,48 +222,16 @@ skills = [
     "Adobe Creative Suite", "Microsoft Office"
 ]
 
-st.markdown("<div class='card'>", unsafe_allow_html=True)
-for skill in skills:
-    st.markdown(f"<span class='skill'>{skill}</span>", unsafe_allow_html=True)
+cols = st.columns(3)
+for i, skill in enumerate(skills):
+    cols[i % 3].markdown(f"<span class='skill'>{skill}</span>", unsafe_allow_html=True)
+
 st.markdown("</div>", unsafe_allow_html=True)
 
 # --------------------------------------------------
-# EXPERIENCE
-# --------------------------------------------------
-st.markdown("## Professional Experience")
-
-with st.expander("Assistant Manager – Marketing | GD Goenka University (2024)"):
-    st.markdown(
-        """
-        - Built brand positioning for **Le Cordon Bleu**
-        - Achieved **25% increase in brand awareness**
-        - Improved performance marketing **ROI by 20%**
-        - Led cross-functional brand alignment
-        """
-    )
-
-with st.expander("Marketing Executive | Indian School of Hospitality (2022–2024)"):
-    st.markdown(
-        """
-        - Managed Instagram, Facebook, LinkedIn & YouTube
-        - Increased engagement & audience growth by **30%**
-        - Executed content calendars & campaign launches
-        """
-    )
-
-with st.expander("Social Media Coordinator | Camp Land’s End (2022)"):
-    st.markdown(
-        """
-        - Built social presence from scratch
-        - Executed brand awareness strategy
-        """
-    )
-
-# --------------------------------------------------
-# PROJECTS WITH METRICS
+# PROJECTS
 # --------------------------------------------------
 st.markdown("## Key Projects")
-
 p1, p2 = st.columns(2)
 
 with p1:
@@ -203,10 +239,9 @@ with p1:
         """
         <div class="card">
         <h4>Fan Engagement in Streaming Entertainment</h4>
-        <p>Academic Strategy Project</p>
-        <p class="metric">+ Monetization Framework</p>
-        <p>Mapped fan engagement tactics to revenue outcomes
-        for niche content platforms.</p>
+        <p class="muted">Strategy & Monetization Framework</p>
+        Built a data-backed model linking fan engagement to revenue
+        for niche streaming platforms.
         </div>
         """,
         unsafe_allow_html=True
@@ -217,31 +252,13 @@ with p2:
         """
         <div class="card">
         <h4>Nestlé India – B2B Product Innovation</h4>
-        <p>Industry Collaboration</p>
-        <p class="metric">Market-Led NPD</p>
-        <p>Conducted demand analysis with hotels &
-        restaurants to inform product innovation.</p>
+        <p class="muted">Industry Collaboration</p>
+        Conducted demand analysis with hotels & restaurants to
+        inform product innovation strategy.
         </div>
         """,
         unsafe_allow_html=True
     )
 
-# --------------------------------------------------
-# EDUCATION
-# --------------------------------------------------
-st.markdown("## Education")
-st.markdown(
-    """
-    <div class="card">
-    <b>Master of Global Business (Marketing)</b><br>
-    SP Jain School of Global Management (2025–2026)<br><br>
-    <b>Bachelor of Culinary Arts Management</b><br>
-    Indian School of Hospitality (2018–2022)<br><br>
-    <b>Bachelor of Travel & Tourism Management</b><br>
-    Maharishi Dayanand University (2018–2022)
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
-st.caption("Built with Streamlit • Interactive Resume Dashboard")
+st.markdown("</div>", unsafe_allow_html=True)
+st.caption("Interactive Resume • Built with Streamlit")
