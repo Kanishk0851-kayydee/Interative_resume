@@ -126,7 +126,7 @@ with cta1:
 with cta2:
     st.markdown(
         """
-        <a href="https://www.linkedin.com" target="_blank">
+        <a href="https://www.linkedin.com/in/kanishk-dawar-63b112169/" target="_blank">
         <button style="
             background:#0A66C2;
             color:white;
@@ -181,19 +181,19 @@ st.markdown(
     <div class="card">
         <div style="display:flex; justify-content:space-between; text-align:center;">
             <div style="flex:1;">
-                <h2 id="exp" style="color:{ACCENT};">0</h2>
+                <h2 id="exp" style="color:{ACCENT};">2.5+</h2>
                 <p class="muted">Years Experience</p>
             </div>
             <div style="flex:1;">
-                <h2 id="awareness" style="color:{ACCENT};">0</h2>
-                <p class="muted">% Brand Awareness Growth</p>
+                <h2 id="awareness" style="color:{ACCENT};">20%</h2>
+                <p class="muted">% Increase Brand Awareness Growth</p>
             </div>
             <div style="flex:1;">
-                <h2 id="engagement" style="color:{ACCENT};">0</h2>
-                <p class="muted">% Engagement Growth</p>
+                <h2 id="engagement" style="color:{ACCENT};">35%</h2>
+                <p class="muted">% Increase Engagement Growth</p>
             </div>
             <div style="flex:1;">
-                <h2 id="roi" style="color:{ACCENT};">0</h2>
+                <h2 id="roi" style="color:{ACCENT};">15%</h2>
                 <p class="muted">% ROI Improvement</p>
             </div>
         </div>
